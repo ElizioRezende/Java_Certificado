@@ -72,7 +72,13 @@ public class SocketFactoryDinamico implements ProtocolSocketFactory {
 
     public TrustManager[] createTrustManagers() throws KeyStoreException, NoSuchAlgorithmException, CertificateException, IOException {
         final TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
-        KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+
+        String type = KeyStore.getDefaultType();
+        if (CertificadoService.isAndroid) {
+            type = "BKS";
+        }
+
+        KeyStore trustStore = KeyStore.getInstance(type);
         trustStore.load(fileCacerts, SENHA_CACERT);
         trustManagerFactory.init(trustStore);
         return trustManagerFactory.getTrustManagers();

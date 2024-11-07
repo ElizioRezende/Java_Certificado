@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.com.swconsultoria</groupId>
     <artifactId>java_certificado</artifactId>
-    <version>3.8-SNAPSHOT</version>
+    <version>3.8-ANDROID</version>
     <name>Java_Certificado</name>
     <description>Api java para gerenciamento de certificados digitais</description>
     <url>https://github.com/Samuel-Oliveira/Java_Certificado</url>
@@ -96,7 +96,7 @@
                     <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
-            <plugin>
+            <!--<plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.6</version>
@@ -109,7 +109,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
+            </plugin>-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>

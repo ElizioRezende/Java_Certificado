@@ -28,12 +28,20 @@ public class CertificadoService {
     private static final String ERRO_AO_CARREGAR_INFORMACOES_DO_CERTIFICADO = "Erro ao carregar informações do certificado:";
     private static boolean cacertProprio;
 
+    public static boolean isAndroid = false;
+
     private CertificadoService() {
     }
 
     public static void inicializaCertificado(Certificado certificado) throws CertificadoException {
         cacertProprio = true;
-        inicializaCertificado(certificado, CertificadoService.class.getResourceAsStream("/cacert"));
+
+        String resource = "/cacert";
+        if (CertificadoService.isAndroid) {
+            resource = "/android/cacert";
+        }
+
+        inicializaCertificado(certificado, CertificadoService.class.getResourceAsStream(resource));
     }
 
     /**
@@ -95,8 +103,19 @@ public class CertificadoService {
         if (keyStore == null) {
             keyStore = getKeyStore(certificado);
             Enumeration<String> aliasEnum = keyStore.aliases();
-            String aliasKey = aliasEnum.nextElement();
-            certificado.setNome(aliasKey);
+            if (!isAndroid) {
+                String aliasKey = aliasEnum.nextElement();
+                certificado.setNome(aliasKey);
+            } else {
+                while (aliasEnum.hasMoreElements()) {
+                    try {
+                        String alias = aliasEnum.nextElement();
+                        keyStore.getEntry(alias, new KeyStore.PasswordProtection(certificado.getSenha().toCharArray()));
+                        certificado.setNome(alias);
+                        break;
+                    } catch (Exception ignored) {}
+                }
+            }
         }
 
         X509Certificate certificate = getCertificate(certificado, keyStore);
